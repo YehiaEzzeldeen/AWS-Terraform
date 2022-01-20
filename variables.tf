@@ -1,7 +1,7 @@
 ################### Network Variables
 variable "region" {
   type        = string
-  default     = "us-east-1"
+  default     = "us-west-2"
   description = "AWS Region"
 }
 
@@ -43,9 +43,38 @@ variable "private_subnets" {
   default = ["10.0.3.0/24", "10.0.4.0/24", "10.0.6.0/24"]
 }
 
-################### Servers Variables
-
-variable "security_groups_names" {
+variable "sg_names" {
   type    = list(string)
-  default = ["SG1","SG2"]
+  default = ["web-SG","DB-SG"]
+}
+
+variable "sg_protocols" {
+  type = list(list(object({
+    from_port = number
+    to_port = number
+    protocol = string
+    cidr_blocks = list(string)
+  })))
+
+  default = [[
+    {
+      from_port = 80
+      to_port = 80
+      protocol = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      from_port = 22
+      to_port = 22
+      protocol = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ],[
+    {
+      from_port = 3306
+      to_port = 3306
+      protocol = "tcp"
+      cidr_blocks = ["10.0.0.0/16"]
+    }
+  ]]
 }

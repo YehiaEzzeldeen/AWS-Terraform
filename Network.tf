@@ -89,26 +89,6 @@ resource "aws_route_table_association" "prv_rt_assoc" {
   route_table_id = aws_route_table.prv_rt.id
 }
 
-####################### SG
-
-resource "aws_security_group" "SGs" {
-  name        = var.security_groups_names[count.index]
-  count          = length(var.security_groups_names)
-  description = var.security_groups_names[count.index]
-  vpc_id      = aws_vpc.vpc.id
-  
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  tags = {
-    Name = var.security_groups_names[count.index]
-  }
-}
 
 
 output "vpc-id" {
@@ -121,8 +101,4 @@ output "public-subnets" {
 
 output "private-subnets" {
   value = aws_subnet.private_subnets[*].id
-}
-
-output "security-groups" {
-  value = aws_security_group.SGs[*].id
 }
