@@ -25,12 +25,12 @@ variable "VPC_CIDR" {
 
 variable "public_subnets_names" {
   type    = list(string)
-  default = ["pub-sub-01", "pub-sub-02", "pub-sub-03","pub-sub-04"]
+  default = ["pub-sub-01", "pub-sub-02", "pub-sub-03", "pub-sub-04"]
 }
 
 variable "public_subnets" {
   type    = list(string)
-  default = ["10.0.1.0/24", "10.0.2.0/24", "10.0.5.0/24","10.0.8.0/24"]
+  default = ["10.0.1.0/24", "10.0.2.0/24", "10.0.5.0/24", "10.0.8.0/24"]
 }
 
 variable "private_subnets_names" {
@@ -45,36 +45,59 @@ variable "private_subnets" {
 
 variable "sg_names" {
   type    = list(string)
-  default = ["web-SG","DB-SG"]
+  default = ["web-SG", "DB-SG", "adm-SG"]
 }
 
 variable "sg_protocols" {
   type = list(list(object({
-    from_port = number
-    to_port = number
-    protocol = string
+    from_port   = number
+    to_port     = number
+    protocol    = string
     cidr_blocks = list(string)
   })))
 
   default = [[
     {
-      from_port = 80
-      to_port = 80
-      protocol = "tcp"
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     },
     {
-      from_port = 22
-      to_port = 22
-      protocol = "tcp"
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      from_port   = 30000
+      to_port     = 32000
+      protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     }
-  ],[
+    ], [
     {
-      from_port = 3306
-      to_port = 3306
-      protocol = "tcp"
+      from_port   = 3306
+      to_port     = 3306
+      protocol    = "tcp"
       cidr_blocks = ["10.0.0.0/16"]
     }
+    ], [
+    {
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      from_port = 3389
+      to_port   = 3389
+      protocol  = "tcp"
+    cidr_blocks = ["10.0.0.0/16"] }
   ]]
+}
+
+variable "keypair_names" {
+  type    = list(string)
+  default = ["adm-key","back-key"]
 }
