@@ -25,12 +25,12 @@ variable "VPC_CIDR" {
 
 variable "public_subnets_names" {
   type    = list(string)
-  default = ["pub-sub-01", "pub-sub-02", "pub-sub-03", "pub-sub-04"]
+  default = ["pub-sub-01", "pub-sub-02", "pub-sub-03"]
 }
 
 variable "public_subnets" {
   type    = list(string)
-  default = ["10.0.1.0/24", "10.0.2.0/24", "10.0.5.0/24", "10.0.8.0/24"]
+  default = ["10.0.1.0/24", "10.0.2.0/24", "10.0.5.0/24"]
 }
 
 variable "private_subnets_names" {
@@ -42,6 +42,9 @@ variable "private_subnets" {
   type    = list(string)
   default = ["10.0.3.0/24", "10.0.4.0/24", "10.0.6.0/24"]
 }
+
+################### Security Groups Variables
+
 
 variable "sg_names" {
   type    = list(string)
@@ -97,7 +100,42 @@ variable "sg_protocols" {
   ]]
 }
 
+################### Key Pairs Variables
+
 variable "keypair_names" {
   type    = list(string)
-  default = ["adm-key","back-key"]
+  default = ["adm-key", "back-key", "front-key", "new-key"]
+}
+################### VPN site to site Variables
+
+#variable "Customer_gateway_ip" {
+  #type    = list(string)
+  #default = ["172.0.0.1", "172.0.0.3","172.0.0.4"]
+#}
+
+#variable "vpn_connection_names" {
+  #type    = list(string)
+  #default = ["AWS-HQ-Voda", "AWS-HQ-Orange", "AWS-HQ-Etisalat"]
+#}
+
+#variable "vpn_connection_routes_CIDR" {
+  #type    = list(string)
+  #default = ["192.168.0.0/16", "10.1.0.0/16", "192.168.7.0/24"]
+#}
+
+######################## Backup plan Variables
+
+variable "dailyRetention" {
+  type        = number
+  default     = 7
+}
+
+variable "weeklyRetention" {
+  type        = number
+  default     = 7
+}
+
+variable "monthlyRetention" {
+  type        = number
+  default     = 7
 }

@@ -5,22 +5,22 @@ variable "generated_key_name" {
 }
 
 resource "tls_private_key" "prv_key" {
-  count = length(var.keypair_names)
+  count     = length(var.keypair_names)
   algorithm = "RSA"
   rsa_bits  = 4096
 }
 
 resource "aws_key_pair" "generated_key" {
-  count = length(var.keypair_names)
+  count      = length(var.keypair_names)
   key_name   = var.keypair_names[count.index]
   public_key = tls_private_key.prv_key[count.index].public_key_openssh
 }
 
 resource "local_file" "keyFiles" {
-    count = length(var.keypair_names)
-    sensitive_content  = "${tls_private_key.prv_key[count.index].private_key_pem}"
-    filename = "${path.module}/${var.keypair_names[count.index]}.pem"
-    file_permission = "0777"
+  count             = length(var.keypair_names)
+  sensitive_content = tls_private_key.prv_key[count.index].private_key_pem
+  filename          = "${path.module}/${var.keypair_names[count.index]}.pem"
+  file_permission   = "0777"
 }
 
 output "key-Pairs" {
